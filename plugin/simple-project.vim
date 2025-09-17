@@ -65,7 +65,7 @@ function! s:LoadProject()
             execute 'cd '.dir
         endif
         if g:ProjectAutoSession > 0
-            execute 'mksession '.dir.'/projectsession.vim'
+            execute 'mksession! '.dir.'/projectsession.vim'
         endif
         " echo 'Found project '.dir
     else

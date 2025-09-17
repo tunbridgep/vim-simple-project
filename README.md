@@ -22,7 +22,7 @@ Once installed, create a `project.vim` file at the root of your project.
 Once this file has been created:
 - Any file opened within the project directory will set it's working dir to
   match the location of the `project.vim` file (for easy searching through the
-  entire project).
+  entire project with `:find` etc).
 - The `project.vim` file will be sourced every time a buffer from any file
   related to the project is opened. Add any arbitrary per-project commands you
   wish to use in this file and they will be automatically run when editing any

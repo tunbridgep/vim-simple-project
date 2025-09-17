@@ -8,6 +8,7 @@
 let g:ProjectWikiPath = 'wiki'
 let g:ProjectWikiIndex = 'index.md'
 let g:ProjectAutoCMD = 1
+let g:ProjectAutoSession = 1
 
 " Dirty Hack!
 function! s:GetSlash()
@@ -63,6 +64,9 @@ function! s:LoadProject()
         if g:ProjectAutoCMD > 0
             execute 'cd '.dir
         endif
+        if g:ProjectAutoSession > 0
+            execute 'mksession '.dir.'/projectsession.vim'
+        endif
         " echo 'Found project '.dir
     else
         " echo 'No project found'
@@ -76,6 +80,13 @@ function! s:RefreshProjectDir()
     let dir=s:GetProjectDir()
     if dir!=""
         execute 'cd '.dir
+    endif
+endfunction
+
+function! s:OpenProjectSession
+    let dir=s:GetProjectDir()
+    if dir!="" && g:ProjectAutoSession > 0
+        execute 'source '.dir.'/projectsession.vim'
     endif
 endfunction
 
@@ -127,6 +138,7 @@ command! ProjectWikiV call s:AccessProjectWiki('v')
 command! ProjectWikiH call s:AccessProjectWiki('s')
 command! ProjectWikiT call s:AccessProjectWiki('t')
 command! ProjectWiki call s:AccessProjectWiki('')
+command! ProjectSession call s:OpenProjectSession()
 
 augroup ProjectPluginFunctions
     autocmd!

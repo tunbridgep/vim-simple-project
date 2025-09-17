@@ -9,6 +9,7 @@ let g:ProjectWikiPath = 'wiki'
 let g:ProjectWikiIndex = 'index.md'
 let g:ProjectAutoCMD = 1
 " let g:ProjectAutoSession = 1
+let g:ProjectAutoBD = 0
 
 " Dirty Hack!
 function! s:GetSlash()
@@ -86,6 +87,12 @@ endfunction
 function! s:LoadProjectSession()
     let dir=s:GetProjectDir()
     if dir!=""
+        " hack, I probably shouldn't do this. But it's "comfy" for now.
+        " Will probably change later...
+        " Replace the current buffer with our project session.
+        if g:ProjectAutoBD > 0
+            execute 'bd'
+        endif
         execute 'source '.dir.'/projectsession.vim'
     endif
 endfunction

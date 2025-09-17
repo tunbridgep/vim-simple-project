@@ -83,7 +83,7 @@ function! s:RefreshProjectDir()
     endif
 endfunction
 
-function! s:OpenProjectSession
+function! s:OpenProjectSession()
     let dir=s:GetProjectDir()
     if dir!="" && g:ProjectAutoSession > 0
         execute 'source '.dir.'/projectsession.vim'

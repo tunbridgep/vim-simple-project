@@ -7,6 +7,10 @@ to be able to set some vim settings per-project (such as the theme), since I
 have a few projects with very similar files and wanted to make sure I never got
 confused about which project files belonged to.
 
+I tried other project plugins in the past, but all of them required managing
+project lists in a centralised location and added a lot of extra
+boilerplate, which I didn't want.
+
 This is a very simple plugin and I don't expect anyone else to want to use it,
 it's here in case anyone finds it useful.
 

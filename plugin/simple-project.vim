@@ -83,12 +83,20 @@ function! s:RefreshProjectDir()
     endif
 endfunction
 
-" function! s:OpenProjectSession()
-"     let dir=s:GetProjectDir()
-"     if dir!="" && g:ProjectAutoSession > 0
-"         execute 'source '.dir.'/projectsession.vim'
-"     endif
-" endfunction
+function! s:LoadProjectSession()
+    let dir=s:GetProjectDir()
+    if dir!=""
+        execute 'source '.dir.'/projectsession.vim'
+    endif
+endfunction
+
+function! s:SaveProjectSession()
+    let dir=s:GetProjectDir()
+    if dir!=""
+        execute 'mksession! '.dir.'/projectsession.vim'
+    endif
+endfunction
+
 
 " Open the actual project file
 function! s:OpenProjectFile(type)
@@ -138,7 +146,8 @@ command! ProjectWikiV call s:AccessProjectWiki('v')
 command! ProjectWikiH call s:AccessProjectWiki('s')
 command! ProjectWikiT call s:AccessProjectWiki('t')
 command! ProjectWiki call s:AccessProjectWiki('')
-" command! ProjectSession call s:OpenProjectSession()
+command! ProjectSaveSession call s:SaveProjectSession()
+command! ProjectLoadSession call s:LoadProjectSession()
 
 augroup ProjectPluginFunctions
     autocmd!

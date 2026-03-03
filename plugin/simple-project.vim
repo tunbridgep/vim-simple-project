@@ -6,7 +6,8 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
 let g:ProjectWikiPath = 'wiki'
-let g:ProjectWikiIndex = 'index.md'
+let g:ProjectWikiIndex = 'index'
+let g:ProjectWikiFileExt = 'md'
 let g:ProjectWikiExcludePath = ''
 let g:ProjectAutoCMD = 1
 " let g:ProjectAutoSession = 1
@@ -148,7 +149,7 @@ function! s:GetWikiIndex(type)
         call mkdir(dir)
     endif
 
-    call s:OpenFile(dir.'/'.g:ProjectWikiIndex,a:type)
+    call s:OpenFile(dir.'/'.g:ProjectWikiIndex.".".g:ProjectWikiFileExt,a:type)
 endfunction
 
 function! s:GetWikiPage(type)
@@ -159,8 +160,7 @@ function! s:GetWikiPage(type)
     let fileExt=expand("%:e")
     let path=substitute(path,g:ProjectWikiExcludePath,"","")
     let dirPath=substitute(path,fileName,"","")
-    let wikiPagePath=substitute(path,".".fileExt,".md","")
-    
+    let wikiPagePath=substitute(path,".".fileExt,".".g:ProjectWikiFileExt,"")
     
     let wikiPage=wikiDir.s:GetSlash().wikiPagePath
     let wikiPageDir=wikiDir.s:GetSlash().dirPath

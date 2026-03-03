@@ -7,6 +7,7 @@
 
 let g:ProjectWikiPath = 'wiki'
 let g:ProjectWikiIndex = 'index.md'
+let g:ProjectWikiExcludePath = ''
 let g:ProjectAutoCMD = 1
 " let g:ProjectAutoSession = 1
 let g:ProjectAutoBD = 0
@@ -125,22 +126,54 @@ function! s:OpenProjectFile(type)
     endif
 endfunction
 
+" Open a file in a various way
+function! s:OpenFile(path,type)
+    if a:type == 'v'
+        execute 'vsp '.a:path
+    elseif a:type == 's'
+        execute 'split '.a:path
+    elseif a:type == 't'
+        execute 'tabe '.a:path
+    else
+        execute 'e '.a:path
+    endif
+endfunction
+
 " Open the project wiki
-function! s:AccessProjectWiki(type)
+function! s:GetWikiIndex(type)
     let dir=s:GetProjectDir().s:GetSlash().g:ProjectWikiPath
     if !isdirectory(dir) && s:AskForConfirmation('Create new wiki at',dir) == 0
         return
     elseif !isdirectory(dir)
         call mkdir(dir)
     endif
-    if a:type == 'v'
-        execute 'vsp '.dir.'/'.g:ProjectWikiIndex
-    elseif a:type == 's'
-        execute 'split '.dir.'/'.g:ProjectWikiIndex
-    elseif a:type == 't'
-        execute 'tabe '.dir.'/'.g:ProjectWikiIndex
+
+    call s:OpenFile(dir.'/'.g:ProjectWikiIndex,a:type)
+endfunction
+
+function! s:GetWikiPage(type)
+    let baseDir=s:GetProjectDir().s:GetSlash()
+    let wikiDir=baseDir.g:ProjectWikiPath
+    let path=expand("%")
+    let fileName=expand("%:t")
+    let fileExt=expand("%:e")
+    let path=substitute(path,g:ProjectWikiExcludePath,"","")
+    let dirPath=substitute(path,fileName,"","")
+    let wikiPagePath=substitute(path,".".fileExt,".md","")
+    
+    
+    let wikiPage=wikiDir.s:GetSlash().wikiPagePath
+    let wikiPageDir=wikiDir.s:GetSlash().dirPath
+    
+    "echo 'wikiPageFileName: '.wikiPagePath
+    "echo 'wikiPage: '.wikiPage
+    
+    if !isdirectory(wikiPageDir) && s:AskForConfirmation('Create new wiki page at',wikiPage) == 0
+        return
+    elseif !isdirectory(wikiPageDir)
+        call mkdir(wikiPageDir,"p")
     else
-        execute 'e '.dir.'/'.g:ProjectWikiIndex
+        call s:OpenFile(wikiPage,a:type)
     endif
 endfunction
 
@@ -149,10 +182,14 @@ command! ProjectEdit call s:OpenProjectFile('')
 command! ProjectEditV call s:OpenProjectFile('v')
 command! ProjectEditH call s:OpenProjectFile('s')
 command! ProjectEditT call s:OpenProjectFile('t')
-command! ProjectWikiV call s:AccessProjectWiki('v')
-command! ProjectWikiH call s:AccessProjectWiki('s')
-command! ProjectWikiT call s:AccessProjectWiki('t')
-command! ProjectWiki call s:AccessProjectWiki('')
+command! ProjectWikiV call s:GetWikiIndex('v')
+command! ProjectWikiH call s:GetWikiIndex('s')
+command! ProjectWikiT call s:GetWikiIndex('t')
+command! ProjectWiki call s:GetWikiIndex('')
+command! ProjectWikiPage call s:GetWikiPage('')
+command! ProjectWikiPageV call s:GetWikiPage('v')
+command! ProjectWikiPageH call s:GetWikiPage('s')
+command! ProjectWikiPageT call s:GetWikiPage('t')
 command! ProjectSaveSession call s:SaveProjectSession()
 command! ProjectLoadSession call s:LoadProjectSession()
 
